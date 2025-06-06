@@ -95,7 +95,7 @@ export const loginUser = async (req: Request<{}, {}, LoginRequest>, res: Respons
       secure: process.env.NODE_ENV != "development"
     })
 
-    res.status(200).json({ token, email: user.email });
+    res.status(200).json({ token, email: user.email, fullName: user.fullName, createdAt: user.createdAt, profilePic: user.profilePic });
     return;
   } catch (error) {
     console.error(error);

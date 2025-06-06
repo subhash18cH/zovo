@@ -8,7 +8,7 @@ router.post("/signup", registerUser);
 router.post("/login", loginUser);
 router.post("/logout", logout);
 
-router.post("/update-profile", validateToken, updateProfile);
+router.put("/update-profile", validateToken, updateProfile);
 router.get("/check", validateToken, checkAuth);
 
 export default router;

@@ -4,7 +4,7 @@ import { Eye, EyeOff, Loader2, Lock, Mail } from "lucide-react";
 import logo from "/src/assets/zovo.png"
 import { CiUser } from "react-icons/ci"
 import { Link } from "react-router-dom";
-import AuthImagePattern from "../components/AuthImagePattern";
+import community from "/src/assets/community.jpg";
 import toast from "react-hot-toast";
 
 const Signup = () => {
@@ -34,7 +34,7 @@ const Signup = () => {
   }
 
   return (
-    <div className="min-h-screen grid lg:grid-cols-2">
+    <div className="min-h-screen grid lg:grid-cols-2 mt-10">
 
       {/* Left Side */}
       <div className="flex flex-col justify-center items-center p-6 sm:p-12">
@@ -90,7 +90,7 @@ const Signup = () => {
                   id="email"
                   type="email"
                   className={`input input-bordered w-full pl-10`}
-                  placeholder="joe_root@gmail.com"
+                  placeholder="joe@gmail.com"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 />
@@ -154,10 +154,13 @@ const Signup = () => {
       </div>
 
       {/* Right side */}
-      <AuthImagePattern
-        title="Join our community"
-        subtitle="Connect with friends, share moments, and stay in touch with your loved ones."
-      />
+      <div className="hidden lg:flex items-center justify-center bg-base-200 p-12">
+        <div className="max-w-screen text-center">
+          <img src={community} alt="community image" className="mb-4" />
+          <h2 className="text-2xl font-bold mb-4">Join our community</h2>
+          <p className="text-base-content/60">Connect with friends, share moments, and stay in touch with your loved ones.</p>
+        </div>
+      </div>
 
     </div>
   )

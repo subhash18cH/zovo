@@ -5,7 +5,9 @@ export interface IUser extends Document {
   fullName: string,
   email: string,
   password: string,
-  profilePic: string
+  profilePic?: string,
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 //user schema

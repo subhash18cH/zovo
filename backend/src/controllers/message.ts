@@ -14,7 +14,7 @@ interface AuthenticatedRequest extends Request {
 //GET- api/message/users - users for sidebar excluding you 
 export const getUsersForSidebar = async (req: AuthenticatedRequest, res: Response) => {
   try {
-    const loggedInUserId = req.user?.email;
+    const loggedInUserId = req.user?.userId;
     const filteredUsers = await User.find({ _id: { $ne: loggedInUserId } }).select("-password");
     res.status(200).json(filteredUsers);
     return;

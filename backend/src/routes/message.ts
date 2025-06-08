@@ -8,6 +8,6 @@ router.get("/users", validateToken, getUsersForSidebar);
 
 router.get("/:id", validateToken, getMessages);
 
-router.get("/:id", validateToken, sendMessages);
+router.post("/send/:id", validateToken, sendMessages);
 
 export default router;

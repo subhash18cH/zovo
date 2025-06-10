@@ -1,22 +1,30 @@
 import {create} from "zustand";
 import api from "../libs/Api";
 import toast from "react-hot-toast";
+import { io } from "socket.io-client";
 
-export const useAuthStore=create( (set) => ( {
+const baseUrl=import.meta.env.VITE_BASE_URL;
+console.log("bbbb--",baseUrl);
+
+export const useAuthStore=create( (set,get) => ( {
   authUser:null,
   isSigningUp:false,
   isLoggingIn:false,
   isUpdatingProfile:false,
   isCheckingAuth:true,
   onlineUsers:[],
+  socket:null,
 
   checkAuth: async()=>{
     try {
       const res= await api.get("/auth/check");
-      set({authUser:res.data});
+      console.log("auth user----",res.data);
       
+      set({authUser:res.data});
+      get().connectSocket();
     } catch (error) {
       console.log(error);
+      
       set({authUser:null});
     }finally{
       set({isCheckingAuth:false})
@@ -44,6 +52,8 @@ export const useAuthStore=create( (set) => ( {
       if(res.status===200){
         set({authUser:res.data});
         toast.success("Logged in successfully");
+        get().connectSocket()
+        window.location.reload();
       }
     } catch (error) {
       toast.error(error.response.data.message);
@@ -57,6 +67,7 @@ export const useAuthStore=create( (set) => ( {
       await api.post("/auth/logout");
       set({authUser:null});
       toast.success("Logged out successfully");
+      get().disconnectSocket();
     } catch (error) {
       toast.error(error.response.data.message);
     }
@@ -75,6 +86,30 @@ export const useAuthStore=create( (set) => ( {
     }finally{
       set({isUpdatingProfile:false});
     }
-  }
-  
+  },
+
+  connectSocket:()=>{
+    const {authUser}=get();
+    if(!authUser || get().socket?.connected){
+      return;
+    }
+    const socket=io(baseUrl,{
+      query:{
+        userId:authUser.userId
+      }
+    });
+    socket.connect();
+
+    set({socket:socket});
+
+    socket.on("getOnlineUsers",(userIds)=>{
+      set({onlineUsers:userIds})
+    })
+  },
+
+  disconnectSocket:()=>{
+    if(get().socket?.connected){
+      get().socket.disconnect();
+    }
+  },
 } ) ) 

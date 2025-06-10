@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { User } from "../models/user";
 import { IMessage, Message } from "../models/message";
 import cloudinary from "../libs/cloudinary";
+import { getReceiverSocketId, io } from "../libs/socket";
 
 //extended user request
 interface AuthenticatedRequest extends Request {
@@ -48,27 +49,40 @@ export const getMessages = async (req: AuthenticatedRequest, res: Response) => {
 export const sendMessages = async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { text, image }: { text?: string, image?: string } = req.body;
-
     const { id: receiverId } = req.params;
     const senderId = req.user?.userId;
 
     let imageUrl: string | undefined;
     if (image) {
-      //upload base64 image to cloudinary
       const uploadResponse = await cloudinary.uploader.upload(image);
       imageUrl = uploadResponse.secure_url;
     }
-    const newMessage = Message.create({
+
+    const newMessage = new Message({
       senderId,
       receiverId,
       text,
-      image: imageUrl || ""
-    })
-    // todo: realtime functionality goes here => socket.io
+      image: imageUrl, // Use imageUrl instead of image
+    });
+
+    await newMessage.save();
+
+    // Emit to receiver
+    const receiverSocketId = getReceiverSocketId(receiverId);
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("newMessage", newMessage);
+    }
+
+    // Emit to sender as well (THIS IS THE MISSING PART)
+    const senderSocketId = getReceiverSocketId(senderId);
+    if (senderSocketId) {
+      io.to(senderSocketId).emit("newMessage", newMessage);
+    }
+
     res.status(201).json(newMessage);
     return;
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
   }
-}
+};

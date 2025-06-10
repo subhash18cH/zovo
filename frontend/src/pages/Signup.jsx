@@ -2,10 +2,10 @@ import { useState } from "react"
 import { useAuthStore } from "../store/useAuthStore";
 import { Eye, EyeOff, Loader2, Lock, Mail } from "lucide-react";
 import logo from "/src/assets/zovo.png"
-import { CiUser } from "react-icons/ci"
 import { Link } from "react-router-dom";
 import community from "/src/assets/community.jpg";
 import toast from "react-hot-toast";
+import { FaRegUser } from "react-icons/fa";
 
 const Signup = () => {
 
@@ -34,7 +34,7 @@ const Signup = () => {
   }
 
   return (
-    <div className="min-h-screen grid lg:grid-cols-2 mt-10">
+    <div className="min-h-screen grid lg:grid-cols-2 mt-8">
 
       {/* Left Side */}
       <div className="flex flex-col justify-center items-center p-6 sm:p-12">
@@ -49,9 +49,6 @@ const Signup = () => {
               <h1 className="text-2xl font-bold mt-2">
                 Create Account
               </h1>
-              <p className="text-base-content/60">
-                Get Started with your free account
-              </p>
             </div>
 
           </div>
@@ -65,12 +62,13 @@ const Signup = () => {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <CiUser size={20} />
+                  <FaRegUser className="size-5 text-base-content/40" />
                 </div>
                 <input
+                  required
                   id="fullName"
                   type="text"
-                  className={`input input-bordered w-full pl-10`}
+                  className={`text-sm h-10 bg-base-100 border border-gray-100/30 rounded-md  w-full pl-10`}
                   placeholder="Joe Root"
                   value={formData.fullName}
                   onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
@@ -87,9 +85,10 @@ const Signup = () => {
                   <Mail className="size-5 text-base-content/40" />
                 </div>
                 <input
+                  required
                   id="email"
                   type="email"
-                  className={`input input-bordered w-full pl-10`}
+                  className={`text-sm h-10 bg-base-100 border border-gray-100/30 rounded-md w-full pl-10`}
                   placeholder="joe@gmail.com"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -104,12 +103,13 @@ const Signup = () => {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="size-5 text-base-content/40" />
+                  <Lock className="size-5 text-base-content/10" />
                 </div>
                 <input
+                  required
                   id="password"
                   type={showPassword ? "text" : "password"}
-                  className={`input input-bordered w-full pl-10`}
+                  className={`text-sm h-10 bg-base-100 border border-gray-100/30 rounded-md w-full pl-10`}
                   placeholder="••••••••"
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
@@ -158,7 +158,7 @@ const Signup = () => {
         <div className="max-w-screen text-center">
           <img src={community} alt="community image" className="mb-4" />
           <h2 className="text-2xl font-bold mb-4">Join our community</h2>
-          <p className="text-base-content/60">Connect with friends, share moments, and stay in touch with your loved ones.</p>
+          <p className="text-base-content/60">Build connections, share moments, and stay engaged.</p>
         </div>
       </div>
 

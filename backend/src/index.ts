@@ -4,28 +4,27 @@ import messageRoutes from "./routes/message";
 import { connectToDB } from "./db/db";
 import cookieParser from "cookie-parser";
 import cors from "cors"
-
+import { app, server } from "./libs/socket"
 const PORT = process.env.PORT;
 const FRONTEND_URL = process.env.FRONTEND_URL;
-
-//initializing express
-const app = express();
 
 //middlewares
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: FRONTEND_URL,
   credentials: true
 }));
 
 
 //auth routes
 app.use("/api/auth", authRoutes)
+
+//message routes
 app.use("/api/message", messageRoutes)
 
 //entry point
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log("server is running on " + PORT);
   connectToDB();//db connection
 })

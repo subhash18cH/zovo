@@ -4,6 +4,8 @@ import logo from "/src/assets/zovo.png"
 import { Link } from "react-router-dom";
 import { Eye, EyeOff, Loader2, Lock, Mail } from "lucide-react";
 import community from "/src/assets/community.jpg";
+import { MdOutlineMailOutline } from "react-icons/md";
+
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -50,8 +52,9 @@ const LoginPage = () => {
                   <Mail className="h-5 w-5 text-base-content/40" />
                 </div>
                 <input
+                  required
                   type="email"
-                  className={`input input-bordered w-full pl-10`}
+                  className={`text-sm h-10 bg-base-100 border border-gray-100/30 rounded-md w-full pl-10`}
                   placeholder="joe@gmail.com"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -68,8 +71,9 @@ const LoginPage = () => {
                   <Lock className="h-5 w-5 text-base-content/40" />
                 </div>
                 <input
+                  required
                   type={showPassword ? "text" : "password"}
-                  className={`input input-bordered w-full pl-10`}
+                  className={`text-sm h-10 bg-base-100 border border-gray-100/30 rounded-md w-full pl-10`}
                   placeholder="••••••••"
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
@@ -116,7 +120,7 @@ const LoginPage = () => {
         <div className="max-w-screen text-center">
           <img src={community} alt="community image" className="mb-4" />
           <h2 className="text-2xl font-bold mb-4">Join our community</h2>
-          <p className="text-base-content/60">Connect with friends, share moments, and stay in touch with your loved ones.</p>
+          <p className="text-base-content/60">Build connections, share moments, and stay engaged.</p>
         </div>
       </div>
     </div>

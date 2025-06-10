@@ -4,8 +4,10 @@ import mongoose, { Document, Model, Schema } from "mongoose";
 export interface IMessage extends Document {
   senderId: mongoose.Types.ObjectId,
   receiverId: mongoose.Types.ObjectId,
-  text: string,
-  image: string,
+  text?: string,
+  image?: string,
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 //Message schema

@@ -6,6 +6,9 @@ import avtar from "/src/assets/avtar.jpg"
 const ChatHeader = () => {
   const { selectedUser, setSelectedUser } = useChatStore();
 
+  console.log("selected user----", selectedUser);
+
+
   const { onlineUsers } = useAuthStore();
 
   return (
@@ -27,7 +30,7 @@ const ChatHeader = () => {
         </div>
         {/* Close button */}
         <button onClick={() => setSelectedUser(null)}>
-          <X size={20}/>
+          <X size={20} />
         </button>
       </div>
     </div>

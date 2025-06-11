@@ -6,9 +6,6 @@ import avtar from "/src/assets/avtar.jpg"
 const ChatHeader = () => {
   const { selectedUser, setSelectedUser } = useChatStore();
 
-  console.log("selected user----", selectedUser);
-
-
   const { onlineUsers } = useAuthStore();
 
   return (

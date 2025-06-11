@@ -4,7 +4,6 @@ import toast from "react-hot-toast";
 import { io } from "socket.io-client";
 
 const baseUrl=import.meta.env.VITE_BASE_URL;
-console.log("bbbb--",baseUrl);
 
 export const useAuthStore=create( (set,get) => ( {
   authUser:null,
@@ -18,13 +17,11 @@ export const useAuthStore=create( (set,get) => ( {
   checkAuth: async()=>{
     try {
       const res= await api.get("/auth/check");
-      console.log("auth user----",res.data);
       
       set({authUser:res.data});
       get().connectSocket();
     } catch (error) {
       console.log(error);
-      
       set({authUser:null});
     }finally{
       set({isCheckingAuth:false})

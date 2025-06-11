@@ -51,6 +51,9 @@ export const sendMessages = async (req: AuthenticatedRequest, res: Response) => 
     const { text, image }: { text?: string, image?: string } = req.body;
     const { id: receiverId } = req.params;
     const senderId = req.user?.userId;
+    if (!senderId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
 
     let imageUrl: string | undefined;
     if (image) {

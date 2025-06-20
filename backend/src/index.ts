@@ -12,7 +12,7 @@ const FRONTEND_URL = process.env.FRONTEND_URL;
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin: FRONTEND_URL,
+  origin: "https://zovo.netlify.app/",
   credentials: true
 }));
 

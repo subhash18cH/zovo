@@ -1,6 +1,7 @@
 import { Server } from "socket.io";
 import http from "http";
 import express, { Express } from "express";
+import { log } from "console";
 
 const app = express();
 const server = http.createServer(app);
@@ -23,6 +24,12 @@ io.on("connection", (socket) => {
   console.log("A user connected", socket.id);
 
   const userId = socket.handshake.query.userId as string;
+
+  if (!userId || userId === "undefined") {
+    console.log("Invalid userId, disconnecting socket.");
+    return socket.disconnect();
+  }
+
 
   if (userId) {
     userSocketMap[userId] = socket.id;

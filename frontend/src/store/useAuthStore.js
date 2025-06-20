@@ -87,9 +87,11 @@ export const useAuthStore=create( (set,get) => ( {
 
   connectSocket:()=>{
     const {authUser}=get();
-    if(!authUser || get().socket?.connected){
+    if(!authUser || !authUser.userId || get().socket?.connected){
       return;
     }
+    console.log("auth user==-",authUser);
+    
     const socket=io(baseUrl,{
       query:{
         userId:authUser.userId

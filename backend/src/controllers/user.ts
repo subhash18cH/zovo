@@ -92,7 +92,7 @@ export const loginUser = async (req: Request<{}, {}, LoginRequest>, res: Respons
       maxAge: 7 * 24 * 60 * 60 * 1000,
       httpOnly: true,
       sameSite: "strict",
-      secure: process.env.NODE_ENV != "development"
+      secure: true
     })
 
     res.status(200).json({ token, email: user.email, fullName: user.fullName, createdAt: user.createdAt, profilePic: user.profilePic });

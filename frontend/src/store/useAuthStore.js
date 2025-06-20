@@ -46,6 +46,7 @@ export const useAuthStore=create( (set,get) => ( {
     try {
       const res=await api.post("/auth/login",data);
       if(res.status===200){
+        localStorage.setItem("JWT",res.data.token);
         set({authUser:res.data});
         toast.success("Logged in successfully");
         get().connectSocket()
@@ -60,7 +61,7 @@ export const useAuthStore=create( (set,get) => ( {
 
   logout: async()=>{
     try {
-      await api.post("/auth/logout");
+      localStorage.clear();
       set({authUser:null});
       toast.success("Logged out successfully");
       get().disconnectSocket();

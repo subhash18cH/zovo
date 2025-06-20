@@ -5,4 +5,16 @@ const api = axios.create({
   withCredentials: true
 });
 
+api.interceptors.request.use(
+  async (config) => {
+    const token = localStorage.getItem("JWT");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+)
 export default api;

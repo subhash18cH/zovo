@@ -14,9 +14,11 @@ interface AuthenticatedRequest extends Request {
 
 export const validateToken = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const token: string = req.cookies.jwt;
+    const authHeader = req.headers["authorization"] || req.headers["Authorization"];
+    const token = typeof authHeader == "string" && authHeader && authHeader.startsWith("Bearer") && authHeader.split(" ")[1];
+
     if (!token) {
-      res.status(401).json({ message: "UnAuthorized - No token provided" });
+      res.status(400).json("token not present");
       return;
     }
     jwt.verify(token, process.env.JWT_SECRET as string, async (err, decoded) => {
@@ -38,7 +40,6 @@ export const validateToken = async (req: AuthenticatedRequest, res: Response, ne
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       };
-
       next();
     })
   } catch (error) {

@@ -93,9 +93,9 @@ export const useAuthStore=create( (set,get) => ( {
     console.log("auth user==-",authUser);
     
     const socket=io(baseUrl,{
-      query:{
-        userId:authUser.userId
-      }
+     auth: {
+      token: localStorage.getItem("JWT")
+      } 
     });
     socket.connect();
 

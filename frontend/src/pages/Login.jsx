@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
+import { useChatStore } from "../store/useChatStore"; // Add this import
 import logo from "/src/assets/zovo.png"
 import { Link } from "react-router-dom";
 import { Eye, EyeOff, Loader2, Lock, Mail } from "lucide-react";
@@ -13,10 +14,19 @@ const LoginPage = () => {
     password: "",
   });
   const { login, isLoggingIn } = useAuthStore();
+  const { getUsers } = useChatStore(); // Add this
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    login(formData);
+
+    // Await the login to complete
+    const result = await login(formData);
+
+    // If login was successful, fetch users
+    if (result?.success) {
+      console.log("Login successful, fetching users...");
+      await getUsers();
+    }
   };
 
   return (

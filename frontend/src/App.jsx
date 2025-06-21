@@ -7,23 +7,23 @@ import Signup from "./pages/Signup"
 import HomePage from "./pages/HomePage"
 import { useAuthStore } from "./store/useAuthStore"
 import { useEffect } from "react"
-import { Loader } from 'lucide-react';
+
 import { Toaster } from "react-hot-toast";
 import { useThemeStore } from "./store/useThemeStore"
 
 const App = () => {
-  const { authUser, checkAuth, isCheckingAuth, onlineUsers } = useAuthStore();
+  const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
   const { theme } = useThemeStore();
-
-  console.log("online---------", onlineUsers);
 
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
-  if (isCheckingAuth && !authUser) {
+
+  // Show loading while checking authentication
+  if (isCheckingAuth) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <Loader className="animate-spin h-10 text-purple-400" />
+        <div className="loading loading-spinner loading-lg"></div>
       </div>
     );
   }
@@ -36,14 +36,35 @@ const App = () => {
       />
       <Navbar />
       <Routes>
-        <Route path="/" element={authUser ? <HomePage /> : <Navigate to={"/login"} />} />
-        <Route path="/signup" element={!authUser ? <Signup /> : <Navigate to={"/"} />} />
-        <Route path="/login" element={!authUser ? <Login /> : <Navigate to={"/"} />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/profile" element={authUser ? <Profile /> : <Navigate to={"/login"} />} />
+        {/* Public routes - redirect to home if already authenticated */}
+        <Route
+          path="/login"
+          element={authUser ? <Navigate to="/" replace /> : <Login />}
+        />
+        <Route
+          path="/signup"
+          element={authUser ? <Navigate to="/" replace /> : <Signup />}
+        />
+
+        {/* Protected routes - redirect to login if not authenticated */}
+        <Route
+          path="/"
+          element={authUser ? <HomePage /> : <Navigate to="/login" replace />}
+        />
+        <Route
+          path="/settings"
+          element={authUser ? <Settings /> : <Navigate to="/login" replace />}
+        />
+        <Route
+          path="/profile"
+          element={authUser ? <Profile /> : <Navigate to="/login" replace />}
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </div>
-  )
-}
 
-export default App
+
+  );
+};
+
+export default App;

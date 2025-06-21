@@ -16,18 +16,25 @@ interface AuthenticatedRequest extends Request {
 export const validateToken = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
   try {
     const authHeader = req.headers["authorization"] || req.headers["Authorization"];
+    console.log("Auth header received:", authHeader ? "exists" : "missing"); // Debug
+
     const token = typeof authHeader === "string" && authHeader && authHeader.startsWith("Bearer") && authHeader.split(" ")[1];
 
+    console.log("Extracted token:", token ? "exists" : "missing"); // Debug
+
     if (!token) {
+      console.log("No token found in request"); // Debug
       res.status(401).json({ message: "Access token required" });
       return;
     }
-    try {
 
+    try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as { userId: string };
+      console.log("Token decoded successfully for user:", decoded.userId); // Debug
 
       const user = await User.findById(decoded.userId).select("-password");
       if (!user) {
+        console.log("User not found for ID:", decoded.userId); // Debug
         res.status(401).json({ message: "Unauthorized - User not found" });
         return;
       }
@@ -41,6 +48,7 @@ export const validateToken = async (req: AuthenticatedRequest, res: Response, ne
         updatedAt: user.updatedAt,
       };
 
+      console.log("User authenticated:", user.email); // Debug
       next();
 
     } catch (jwtError) {

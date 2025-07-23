@@ -2,7 +2,6 @@ import express from "express";
 import authRoutes from "./routes/user";
 import messageRoutes from "./routes/message";
 import { connectToDB } from "./db/db";
-// import cookieParser from "cookie-parser";
 import cors from "cors"
 import { app, server } from "./libs/socket"
 const PORT = process.env.PORT;
@@ -10,12 +9,11 @@ const FRONTEND_URL = process.env.FRONTEND_URL;
 
 //middlewares
 app.use(express.json());
-// app.use(cookieParser());
+
 app.use(cors({
   origin: FRONTEND_URL,
   credentials: true
 }));
-
 
 //auth routes
 app.use("/api/auth", authRoutes)

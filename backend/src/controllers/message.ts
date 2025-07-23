@@ -66,7 +66,7 @@ export const sendMessages = async (req: AuthenticatedRequest, res: Response) => 
       senderId,
       receiverId,
       text,
-      image: imageUrl, // Use imageUrl instead of image
+      image: imageUrl, 
     });
 
     await newMessage.save();
@@ -77,7 +77,7 @@ export const sendMessages = async (req: AuthenticatedRequest, res: Response) => 
       io.to(receiverSocketId).emit("newMessage", newMessage);
     }
 
-    // Emit to sender as well (THIS IS THE MISSING PART)
+    // Emit to sender
     const senderSocketId = getReceiverSocketId(senderId);
     if (senderSocketId) {
       io.to(senderSocketId).emit("newMessage", newMessage);

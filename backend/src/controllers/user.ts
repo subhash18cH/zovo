@@ -88,13 +88,6 @@ export const loginUser = async (req: Request<{}, {}, LoginRequest>, res: Respons
       email: user.email
     }, process.env.JWT_SECRET as string, { expiresIn: "7d" });
 
-    // res.cookie("jwt", token, {
-    //   maxAge: 7 * 24 * 60 * 60 * 1000,
-    //   httpOnly: true,
-    //   sameSite: "none",
-    //   secure: true,
-    // })
-
     res.status(200).json({ token, email: user.email, fullName: user.fullName, createdAt: user.createdAt, profilePic: user.profilePic });
     return;
   } catch (error) {
@@ -102,19 +95,6 @@ export const loginUser = async (req: Request<{}, {}, LoginRequest>, res: Respons
     res.status(500).json({ message: "Server error" });
   }
 }
-
-//POST- api/auth/logout - for logout user
-// export const logout = async (req: Request, res: Response): Promise<void> => {
-//   try {
-    
-//     localStorage.clear();
-//     res.status(200).json("logged out successfully");
-//     return;
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: "Server error" });
-//   }
-// }
 
 //PUT- api/auth/update-profile - for updating profile image of a user
 export const updateProfile = async (req: AuthenticatedRequest, res: Response): Promise<void> => {

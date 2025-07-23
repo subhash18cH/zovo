@@ -26,15 +26,11 @@ export const useAuthStore = create((set, get) => ({
       const res = await api.get("/auth/check");
       set({ authUser: res.data });
       get().connectSocket();
-      
-      // Return the auth user so other functions can use it
-      return res.data;
     } catch (error) {
       console.log("Auth check failed:", error);
       // Clear invalid token
       localStorage.removeItem("JWT");
       set({ authUser: null });
-      return null;
     } finally {
       set({ isCheckingAuth: false });
     }
@@ -59,24 +55,18 @@ export const useAuthStore = create((set, get) => ({
     try {
       const res = await api.post("/auth/login", data);
       if (res.status === 200) {
-        // Store token first
         localStorage.setItem("JWT", res.data.token);
-        
-        // Set auth user
         set({ authUser: res.data });
-        
         toast.success("Logged in successfully");
         
         // Connect socket after setting auth user
-        get().connectSocket();
-        
-        // Return success indicator
-        return { success: true, user: res.data };
+        setTimeout(() => {
+          get().connectSocket();
+        }, 100);
       }
     } catch (error) {
       console.error("Login error:", error);
       toast.error(error.response?.data?.message || "Login failed");
-      return { success: false, error };
     } finally {
       set({ isLoggingIn: false });
     }
@@ -91,6 +81,7 @@ export const useAuthStore = create((set, get) => ({
     } catch (error) {
       toast.error("Logout failed");
       console.log(error);
+      
     }
   },
 

@@ -5,9 +5,7 @@ import { getMessages, getUsersForSidebar, sendMessages } from "../controllers/me
 const router: Router = express.Router();
 
 router.get("/users", validateToken, getUsersForSidebar);
-
 router.get("/:id", validateToken, getMessages);
-
 router.post("/send/:id", validateToken, sendMessages);
 
 export default router;

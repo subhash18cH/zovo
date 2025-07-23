@@ -24,6 +24,7 @@ export function getReceiverSocketId(userId: string) {
   return userSocketMap[userId];
 }
 
+//middleware
 io.use((socket, next) => {
   const token = socket.handshake.auth.token;
 
@@ -42,14 +43,9 @@ io.use((socket, next) => {
   }
 });
 
-
 io.on("connection", (socket) => {
-  console.log("A user connected:", socket.id);
-
   const userId = socket.data.userId as string; 
-
   if (!userId) {
-    console.log("Missing userId after auth, disconnecting");
     return socket.disconnect();
   }
 
@@ -63,5 +59,7 @@ io.on("connection", (socket) => {
     io.emit("getOnlineUsers", Object.keys(userSocketMap));
   });
 });
+
+
 
 export { io, app, server };
